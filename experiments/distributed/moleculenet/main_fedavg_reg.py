@@ -6,17 +6,18 @@ import sys
 import psutil
 import setproctitle
 import torch.nn
-import wandb
+
+# import wandb
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "./../../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "")))
 from data_preprocessing.molecule.data_loader import *
-from model.sage_readout import SageMoleculeNet
-from model.gat_readout import GatMoleculeNet
-from model.gcn_readout import GcnMoleculeNet
-from training.sage_readout_trainer_regression import SageMoleculeNetTrainer
-from training.gat_readout_trainer_regression import GatMoleculeNetTrainer
-from training.gcn_trainer_readout_regression import GcnMoleculeNetTrainer
+from model.moleculenet.sage_readout import SageMoleculeNet
+from model.moleculenet.gat_readout import GatMoleculeNet
+from model.moleculenet.gcn_readout import GcnMoleculeNet
+from training.moleculenet.sage_readout_trainer_regression import SageMoleculeNetTrainer
+from training.moleculenet.gat_readout_trainer_regression import GatMoleculeNetTrainer
+from training.moleculenet.gcn_trainer_readout_regression import GcnMoleculeNetTrainer
 from FedML.fedml_api.distributed.fedavg.FedAvgAPI import (
     FedML_init,
     FedML_FedAvg_distributed,
@@ -212,11 +213,11 @@ def add_args(parser):
 
 def load_data(args, dataset_name):
     if (
-        (args.dataset != "freesolv")
-        and (args.dataset != "qm9")
-        and (args.dataset != "esol")
-        and (args.dataset != "lipo")
-        and (args.dataset != "herg")
+            (args.dataset != "freesolv")
+            and (args.dataset != "qm9")
+            and (args.dataset != "esol")
+            and (args.dataset != "lipo")
+            and (args.dataset != "herg")
     ):
         raise Exception("no such dataset!")
 
@@ -377,18 +378,18 @@ if __name__ == "__main__":
     logging.info("process_id = %d, size = %d" % (process_id, worker_number))
 
     # initialize the wandb machine learning experimental tracking platform (https://www.wandb.com/).
-    if process_id == 0:
-        wandb.init(
-            # project="federated_nas",
-            project="fedmolecule",
-            name="FedMolecule(d)"
-            + str(args.lr)
-            + "_"
-            + args.model
-            + "_"
-            + args.dataset,
-            config=args,
-        )
+    # if process_id == 0:
+    #     wandb.init(
+    #         # project="federated_nas",
+    #         project="fedmolecule",
+    #         name="FedMolecule(d)"
+    #         + str(args.lr)
+    #         + "_"
+    #         + args.model
+    #         + "_"
+    #         + args.dataset,
+    #         config=args,
+    #     )
 
     # Set the random seed. The np.random seed determines the dataset partition.
     # The torch_manual_seed determines the initial weight.
@@ -433,6 +434,8 @@ if __name__ == "__main__":
     # Note if the model is DNN (e.g., ResNet), the training will be very slow.
     # In this case, please use our FedML distributed version (./fedml_experiments/distributed_fedavg)
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
+
+    args.backend = 'MPI'
 
     # start "federated averaging (FedAvg)"
     FedML_FedAvg_distributed(

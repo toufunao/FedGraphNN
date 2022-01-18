@@ -9,7 +9,8 @@ from FedML.fedml_core.trainer.model_trainer import ModelTrainer
 
 
 # Trainer for MoleculeNet. The evaluation metric is ROC-AUC
-
+# wandb.login()
+# wandb.init(project='bbbp training')
 
 class GatMoleculeNetTrainer(ModelTrainer):
     def get_model_params(self):

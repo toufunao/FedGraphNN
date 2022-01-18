@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CLIENT_NUM=$1
+CLIENT_NUM=${1}
 WORKER_NUM=$2
 SERVER_NUM=$3
 GPU_NUM_PER_SERVER=$4
@@ -23,7 +23,7 @@ CI=${19}
 PROCESS_NUM=`expr $WORKER_NUM + 1`
 echo $PROCESS_NUM
 
-hostname > mpi_host_file
+#hostname > mpi_host_file
 
 mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file python3 main_fedavg_reg.py \
   --gpu_server_num $SERVER_NUM \

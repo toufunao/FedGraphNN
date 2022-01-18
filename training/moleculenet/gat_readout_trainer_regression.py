@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import torch
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import wandb
+# import wandb
 from FedML.fedml_core.trainer.model_trainer import ModelTrainer
 
 
@@ -146,14 +146,14 @@ class GatMoleculeNetTrainer(ModelTrainer):
             logging.info(
                 "Client {}, Test {} = {}".format(client_idx, args.metric.upper(), score)
             )
-            wandb.log(
-                {"Client {} Test/{}".format(client_idx, args.metric.upper()): score}
-            )
+            # wandb.log(
+            #     {"Client {} Test/{}".format(client_idx, args.metric.upper()): score}
+            # )
 
         avg_score = list(map(lambda x: sum(x) / len(x), zip(*score_list)))
 
         logging.info("Test {} score = {}".format(args.metric.upper(), avg_score))
-        wandb.log({"Test/{}}".format(args.metric.upper()): avg_score})
+        # wandb.log({"Test/{}}".format(args.metric.upper()): avg_score})
 
         return True
 

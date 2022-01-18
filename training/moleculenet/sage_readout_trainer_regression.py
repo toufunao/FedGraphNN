@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 import torch
-import wandb
+# import wandb
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 from FedML.fedml_core.trainer.model_trainer import ModelTrainer
@@ -20,6 +20,8 @@ class SageMoleculeNetTrainer(ModelTrainer):
         self.model.load_state_dict(model_parameters)
 
     def train(self, train_data, device, args):
+        # todo
+        args.metric = 'r2'
         model = self.model
 
         model.to(device)
@@ -94,6 +96,8 @@ class SageMoleculeNetTrainer(ModelTrainer):
         return min_score, best_model_params
 
     def test(self, test_data, device, args):
+        # todo
+        args.metric = 'r2'
         logging.info("----------test--------")
         model = self.model
         model.eval()
@@ -129,8 +133,10 @@ class SageMoleculeNetTrainer(ModelTrainer):
         return score, model
 
     def test_on_the_server(
-        self, train_data_local_dict, test_data_local_dict, device, args=None
+            self, train_data_local_dict, test_data_local_dict, device, args=None
     ) -> bool:
+        # todo
+        args.metric = 'r2'
         logging.info("----------test_on_the_server--------")
         # for client_idx in train_data_local_dict.keys():
         #     train_data = train_data_local_dict[client_idx]
@@ -148,21 +154,21 @@ class SageMoleculeNetTrainer(ModelTrainer):
             logging.info(
                 "Client {}, Test {} = {}".format(client_idx, args.metric.upper(), score)
             )
-            wandb.log(
-                {"Client {} Test/{}".format(client_idx, args.metric.upper()): score}
-            )
+            # wandb.log(
+            #     {"Client {} Test/{}".format(client_idx, args.metric.upper()): score}
+            # )
 
-        avg_score = list(map(lambda x: sum(x) / len(x), zip(*score_list)))
+        avg_score = list(map(lambda x: sum(x) / len(x), zip(score_list)))
 
         logging.info("Test {} score = {}".format(args.metric.upper(), avg_score))
-        wandb.log({"Test/{}}".format(args.metric.upper()): avg_score})
+        # wandb.log({"Test/{}}".format(args.metric.upper()): avg_score})
 
         return True
 
     def _compare_models(self, model_1, model_2):
         models_differ = 0
         for key_item_1, key_item_2 in zip(
-            model_1.state_dict().items(), model_2.state_dict().items()
+                model_1.state_dict().items(), model_2.state_dict().items()
         ):
             if torch.equal(key_item_1[1], key_item_2[1]):
                 pass

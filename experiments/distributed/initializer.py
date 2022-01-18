@@ -3,10 +3,10 @@ import random
 import numpy as np
 import torch
 
-
 from FedML.fedml_api.distributed.fedavg.FedAvgAPI import FedML_FedAvg_distributed
 from FedML.fedml_api.distributed.fedopt.FedOptAPI import FedML_FedOpt_distributed
 from FedML.fedml_api.distributed.fedprox.FedProxAPI import FedML_FedProx_distributed
+
 
 def get_fl_algorithm_initializer(alg_name):
     if alg_name == "FedAvg":
@@ -20,6 +20,7 @@ def get_fl_algorithm_initializer(alg_name):
 
     return fl_algorithm
 
+
 def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
@@ -27,6 +28,7 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
+
 
 def add_federated_args(parser):
     """
@@ -45,7 +47,6 @@ def add_federated_args(parser):
 
     parser.add_argument('--partition_alpha', type=float, default=0.5, metavar='PA',
                         help='partition alpha (default: 0.5)')
-
 
     # Learning related
     parser.add_argument('--train_batch_size', type=int, default=8, metavar='N',
@@ -131,5 +132,5 @@ def add_federated_args(parser):
 
     parser.add_argument('--ci', type=int, default=0,
                         help='CI')
-    
+
     return parser

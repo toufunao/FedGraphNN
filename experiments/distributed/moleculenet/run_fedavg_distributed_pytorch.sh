@@ -9,7 +9,7 @@ DISTRIBUTION=$6
 PARTITION_ALPHA=$7
 ROUND=$8
 EPOCH=$9
-BATCH_SIZE=$10
+BATCH_SIZE=${10}
 LR=${11}
 HIDDEN_DIM=${12}
 NODE_DIM=${13}
@@ -21,8 +21,9 @@ FL_ALG=${18}
 
 PROCESS_NUM=`expr $WORKER_NUM + 1`
 echo $PROCESS_NUM
+echo 'Start to run mpi'
 
-hostname > mpi_host_file
+#hostname > mpi_host_file
 
 mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file python3 main_fedavg.py \
   --gpu_server_num $SERVER_NUM \

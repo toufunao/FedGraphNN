@@ -2,12 +2,13 @@ import argparse
 import os
 import socket
 import sys
+import time
 
 import psutil
 import setproctitle
 import torch.nn
-import wandb
 
+# import wandb
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "./../../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "")))
 from data_preprocessing.molecule.data_loader import *
@@ -18,7 +19,6 @@ from training.moleculenet.sage_readout_trainer import SageMoleculeNetTrainer
 from training.moleculenet.gat_readout_trainer import GatMoleculeNetTrainer
 from training.moleculenet.gcn_readout_trainer import GcnMoleculeNetTrainer
 from FedML.fedml_api.distributed.fedavg.FedAvgAPI import FedML_init
-
 from experiments.distributed.initializer import add_federated_args, get_fl_algorithm_initializer, set_seed
 
 
@@ -31,19 +31,20 @@ def add_args(parser):
     parser.add_argument('--model', type=str, default='graphsage', metavar='N',
                         help='neural network used in training')
 
-
     parser.add_argument('--dataset', type=str, default='sider', metavar='N',
                         help='dataset used for training')
 
     parser.add_argument('--data_dir', type=str, default='./../../../data/moleculenet/',
                         help='data directory')
 
-    parser.add_argument('--normalize_features', type=bool, default=False, help='Whether or not to symmetrically normalize feat matrices')
+    parser.add_argument('--normalize_features', type=bool, default=False,
+                        help='Whether or not to symmetrically normalize feat matrices')
 
-    parser.add_argument('--normalize_adjacency', type=bool, default=False, help='Whether or not to symmetrically normalize adj matrices')
+    parser.add_argument('--normalize_adjacency', type=bool, default=False,
+                        help='Whether or not to symmetrically normalize adj matrices')
 
-    parser.add_argument('--sparse_adjacency', type=bool, default=False, help='Whether or not the adj matrix is to be processed as a sparse matrix')
-
+    parser.add_argument('--sparse_adjacency', type=bool, default=False,
+                        help='Whether or not the adj matrix is to be processed as a sparse matrix')
 
     parser.add_argument('--batch_size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
@@ -79,9 +80,9 @@ def add_args(parser):
 
 
 def load_data(args, dataset_name):
-    if (args.dataset != 'SIDER') and (args.dataset != 'ClinTox') and (args.dataset != 'BBPB') and \
+    if (args.dataset != 'SIDER') and (args.dataset != 'ClinTox') and (args.dataset != 'bbbp') and \
             (args.dataset != 'BACE') and (args.dataset != 'PCBA') and (args.dataset != 'Tox21') and \
-                (args.dataset != 'MUV') and (args.dataset != 'HIV') :
+            (args.dataset != 'MUV') and (args.dataset != 'HIV'):
         raise Exception("no such dataset!")
 
     compact = args.model == "graphsage"
@@ -214,8 +215,14 @@ def post_complete_message_to_sweep_process(args):
 
 
 if __name__ == "__main__":
+
+    begin = time.time()
+
     # initialize distributed computing (MPI)
     comm, process_id, worker_number = FedML_init()
+    print(comm)
+    print(process_id)
+    print(worker_number)
 
     # parse python script input parameters
     parser = argparse.ArgumentParser()
@@ -249,13 +256,13 @@ if __name__ == "__main__":
     logging.info("process_id = %d, size = %d" % (process_id, worker_number))
 
     # initialize the wandb machine learning experimental tracking platform (https://www.wandb.com/).
-    if process_id == 0:
-        wandb.init(
-            # project="federated_nas",
-            project="fedmolecule",
-            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
-            config=args
-        )
+    # if process_id == 0:
+    #     wandb.init(
+    #         # project="federated_nas",
+    #         project="fedmolecule",
+    #         name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
+    #         config=args
+    #     )
 
     set_seed(0)
 
@@ -293,12 +300,17 @@ if __name__ == "__main__":
     # In this case, please use our FedML distributed version (./fedml_experiments/distributed_fedavg)
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
+    args.fl_algorithm = 'FedAvg'
+
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
     fl_alg(process_id, worker_number, device, comm,
-                             model, train_data_num, train_data_global, test_data_global,
-                             data_local_num_dict, train_data_local_dict, test_data_local_dict, args,
-                             trainer)
+           model, train_data_num, train_data_global, test_data_global,
+           data_local_num_dict, train_data_local_dict, test_data_local_dict, args,
+           trainer)
 
     if process_id == 0:
         post_complete_message_to_sweep_process(args)
+
+    logging.info('Total training time is % ' % (time.time() - begin))
+    print('Total training time is % ' % (time.time() - begin))

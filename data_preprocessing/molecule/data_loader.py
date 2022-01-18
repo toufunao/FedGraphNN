@@ -120,7 +120,7 @@ def create_non_uniform_split(args, idxs, client_number, is_train=True):
 
 
 def partition_data_by_sample_size(
-    args, path, client_number, uniform=True, compact=True
+        args, path, client_number, uniform=True, compact=True
 ):
     (
         train_adj_matrices,
@@ -365,14 +365,14 @@ def get_dataloader(path, compact=True, normalize_features=False, normalize_adj=F
 
 # Single process sequential
 def load_partition_data(
-    args,
-    path,
-    client_number,
-    uniform=True,
-    global_test=True,
-    compact=True,
-    normalize_features=False,
-    normalize_adj=False,
+        args,
+        path,
+        client_number,
+        uniform=True,
+        global_test=True,
+        compact=True,
+        normalize_features=False,
+        normalize_adj=False,
 ):
     global_data_dict, partition_dicts = partition_data_by_sample_size(
         args, path, client_number, uniform, compact=compact

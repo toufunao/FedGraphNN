@@ -2,10 +2,8 @@ import argparse
 import os
 import random
 import sys
-
 import numpy as np
 import torch.nn
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "./../../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "")))
 from data_preprocessing.molecule.data_loader import get_dataloader, get_data
@@ -25,10 +23,10 @@ def add_args(parser):
     # Training settings
 
     parser.add_argument(
-        "--dataset", type=str, default="moleculenet/clintox", help="Dataset used for training"
+        "--dataset", type=str, default="bbbp", help="Dataset used for training"
     )
 
-    parser.add_argument("--data_dir", type=str, default="data", help="Data directory")
+    parser.add_argument("--data_dir", type=str, default="data/moleculenet", help="Data directory")
 
     parser.add_argument(
         "--normalize_features",
