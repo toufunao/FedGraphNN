@@ -8,7 +8,7 @@ import psutil
 import setproctitle
 import torch.nn
 
-# import wandb
+import wandb
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "./../../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "")))
 from data_preprocessing.molecule.data_loader import *
@@ -256,13 +256,13 @@ if __name__ == "__main__":
     logging.info("process_id = %d, size = %d" % (process_id, worker_number))
 
     # initialize the wandb machine learning experimental tracking platform (https://www.wandb.com/).
-    # if process_id == 0:
-    #     wandb.init(
-    #         # project="federated_nas",
-    #         project="fedmolecule",
-    #         name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
-    #         config=args
-    #     )
+    if process_id == 0:
+        wandb.init(
+            # project="federated_nas",
+            project="fedmolecule",
+            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
+            config=args
+        )
 
     set_seed(0)
 
