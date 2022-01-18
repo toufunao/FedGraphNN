@@ -260,6 +260,7 @@ if __name__ == "__main__":
         wandb.init(
             # project="federated_nas",
             project="fedmolecule",
+            entity="sui",
             name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
             config=args
         )
