@@ -26,7 +26,7 @@ class SageMoleculeNetTrainer(ModelTrainer):
 
     def train(self, train_data, device, args):
         model = self.model
-
+        logging.info("train on device : ",device)
         model.to(device)
         model.train()
 

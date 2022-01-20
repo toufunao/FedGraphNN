@@ -3,6 +3,7 @@
 if __name__ == '__main__':
     print('Hello', 'oh', sep=',', end=' ')
     print('my', 'world', sep='', end='!')
+    print('test')
     # wandb.init(project="my-test-project", entity="toufunao")
     #
     # wandb.config = {
