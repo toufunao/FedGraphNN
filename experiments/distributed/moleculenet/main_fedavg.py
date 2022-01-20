@@ -301,7 +301,8 @@ if __name__ == "__main__":
     # In this case, please use our FedML distributed version (./fedml_experiments/distributed_fedavg)
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
-    args.fl_algorithm = 'FedAvg'
+    # Fed alg change here
+    args.fl_algorithm = 'FedOPT'
 
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
