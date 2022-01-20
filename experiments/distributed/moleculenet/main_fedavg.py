@@ -302,7 +302,7 @@ if __name__ == "__main__":
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
     # Fed alg change here
-    args.fl_algorithm = 'FedOPT'
+    args.fl_algorithm = 'FedProx'
 
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
