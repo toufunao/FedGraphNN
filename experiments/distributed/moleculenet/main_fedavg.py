@@ -9,6 +9,7 @@ import setproctitle
 import torch.nn
 
 import wandb
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "./../../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "")))
 from data_preprocessing.molecule.data_loader import *
@@ -261,7 +262,8 @@ if __name__ == "__main__":
             # project="federated_nas",
             project="fedmolecule",
             entity="sui",
-            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr),
+            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr) + "-fl" + (
+                args.fl_algorithm),
             config=args
         )
 
@@ -282,7 +284,7 @@ if __name__ == "__main__":
     )
 
     # load data
-    logging.info("检视参数",args)
+    logging.info("检视参数", args)
     dataset, feat_dim, num_cats = load_data(args, args.dataset)
     [
         train_data_num,
@@ -303,7 +305,7 @@ if __name__ == "__main__":
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
     # Fed alg change here
-    args.fl_algorithm = "FedAvg"
+    # args.fl_algorithm = "FedAvg"
 
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
