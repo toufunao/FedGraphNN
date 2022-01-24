@@ -100,6 +100,7 @@ def load_data(args, dataset_name):
     else:
         args.metric = "roc-auc"
 
+    logging.info(" args checking ****** ",args)
     (
         train_data_num,
         val_data_num,
