@@ -122,6 +122,8 @@ def create_non_uniform_split(args, idxs, client_number, is_train=True):
 def partition_data_by_sample_size(
         args, path, client_number, uniform=True, compact=True
 ):
+    logging.info(" ############*********** client nums ************")
+    logging.info(client_number)
     (
         train_adj_matrices,
         train_feature_matrices,
@@ -224,6 +226,7 @@ def partition_data_by_sample_size(
         partition_dicts[client] = partition_dict
 
     # plot the label distribution similarity score
+    logging.info("******* label for all clients :" , labels_of_all_clients)
     visualize_label_distribution_similarity_score(labels_of_all_clients)
 
     global_data_dict = {
