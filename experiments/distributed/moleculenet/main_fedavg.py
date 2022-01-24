@@ -263,8 +263,7 @@ if __name__ == "__main__":
             # project="federated_nas",
             project="fedmolecule",
             entity="sui",
-            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr) + "-fl" + (
-                args.fl_algorithm),
+            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr) + "-flFedOPT",
             config=args
         )
 
@@ -306,7 +305,7 @@ if __name__ == "__main__":
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
     # Fed alg change here
-    # args.fl_algorithm = "FedAvg"
+    args.fl_algorithm = "FedOPT"
 
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
