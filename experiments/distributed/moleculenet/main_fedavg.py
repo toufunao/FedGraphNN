@@ -282,7 +282,7 @@ if __name__ == "__main__":
     )
 
     # load data
-    print("检视参数",args)
+    logging.info("检视参数",args)
     dataset, feat_dim, num_cats = load_data(args, args.dataset)
     [
         train_data_num,
