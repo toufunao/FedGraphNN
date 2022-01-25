@@ -100,7 +100,7 @@ def load_data(args, dataset_name):
     else:
         args.metric = "roc-auc"
 
-    logging.info(" args checking ****** ",args)
+    logging.info(" args checking ****** ", args)
     (
         train_data_num,
         val_data_num,
@@ -263,7 +263,8 @@ if __name__ == "__main__":
             # project="federated_nas",
             project="fedmolecule",
             entity="sui",
-            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr) + "-flFedOPT",
+            name="FedGraphNN(d)" + str(args.model) + "r" + str(args.dataset) + "-lr" + str(args.lr) + "-fl" + str(
+                args.fl_algorithm),
             config=args
         )
 
@@ -305,7 +306,7 @@ if __name__ == "__main__":
     model, trainer = create_model(args, args.model, feat_dim, num_cats, output_dim=None)
 
     # Fed alg change here
-    args.fl_algorithm = "FedOPT"
+    # args.fl_algorithm = "FedOPT"
 
     # start "federated averaging (FedAvg)"
     fl_alg = get_fl_algorithm_initializer(args.fl_algorithm)
