@@ -81,9 +81,9 @@ def add_args(parser):
 
 
 def load_data(args, dataset_name):
-    if (args.dataset != 'SIDER') and (args.dataset != 'ClinTox') and (args.dataset != 'bbbp') and \
-            (args.dataset != 'BACE') and (args.dataset != 'PCBA') and (args.dataset != 'Tox21') and \
-            (args.dataset != 'MUV') and (args.dataset != 'HIV'):
+    if (args.dataset != 'SIDER') and (args.dataset != 'clintox') and (args.dataset != 'bbbp') and \
+            (args.dataset != 'bace') and (args.dataset != 'pcba') and (args.dataset != 'Tox21') and \
+            (args.dataset != 'muv') and (args.dataset != 'hiv'):
         raise Exception("no such dataset!")
 
     compact = args.model == "graphsage"
