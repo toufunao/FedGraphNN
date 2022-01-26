@@ -4,8 +4,10 @@
 echo 'ip list :'
 ipList="10.244.52.7 10.244.36.13 10.244.37.7 10.244.44.7 10.244.50.7 10.244.53.7 10.244.45.8 10.244.43.7 10.244.48.8 10.244.41.7 10.244.56.7 10.244.55.7"
 for i in $ipList; do
-    echo "$i"
+    echo "updating $i"
+    ssh $i "cd /opt/FedGraphNN/ ; git pull "
 done
+
 
 
 CLIENT_NUM=$1
@@ -31,8 +33,8 @@ PROCESS_NUM=`expr $WORKER_NUM + 1`
 if [ ! -n "$MPI_HOST_FILE" ]; then
   MPI_HOST_FILE = 'mpi_host_file'
 fi
-echo 'using MPI_HOST_FILE :' + $MPI_HOST_FILE
-echo 'processor number :' + $PROCESS_NUM
+echo 'using MPI_HOST_FILE :'  $MPI_HOST_FILE
+echo 'processor number :'  $PROCESS_NUM
 echo 'Start to run mpi'
 
 
