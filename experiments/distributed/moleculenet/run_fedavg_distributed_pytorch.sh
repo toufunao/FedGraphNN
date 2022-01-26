@@ -28,10 +28,11 @@ READ_DIM=${15}
 GRAPH_DIM=${16}
 DATASET=${17}
 FL_ALG=${18}
-MPI_HOST_FILE=${19}
+MPI_HOST_FILE=${19:-mpi_host_file}
 PROCESS_NUM=`expr $WORKER_NUM + 1`
 if [ ! -n "$MPI_HOST_FILE" ]; then
-  MPI_HOST_FILE = 'mpi_host_file'
+  echo 'use default mpi_host_file'
+  MPI_HOST_FILE='mpi_host_file'
 fi
 echo 'using MPI_HOST_FILE :'  $MPI_HOST_FILE
 echo 'processor number :'  $PROCESS_NUM
