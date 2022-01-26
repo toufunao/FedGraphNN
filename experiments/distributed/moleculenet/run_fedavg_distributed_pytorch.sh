@@ -18,14 +18,18 @@ READ_DIM=${15}
 GRAPH_DIM=${16}
 DATASET=${17}
 FL_ALG=${18}
-
+MPI_HOST_FILE=${19}
 PROCESS_NUM=`expr $WORKER_NUM + 1`
-echo $PROCESS_NUM
+if [ ! -n "$MPI_HOST_FILE" ]; then
+  PI_HOST_FILE = 'mpi_host_file'
+echo 'using MPI_HOST_FILE :' + $MPI_HOST_FILE
+echo 'processor number :' + $PROCESS_NUM
 echo 'Start to run mpi'
+
 
 #hostname > mpi_host_file
 
-mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file python3 main_fedavg.py \
+mpirun -np $PROCESS_NUM -hostfile ./$MPI_HOST_FILE python3 main_fedavg.py \
   --gpu_server_num $SERVER_NUM \
   --gpu_num_per_server $GPU_NUM_PER_SERVER \
   --model $MODEL \
