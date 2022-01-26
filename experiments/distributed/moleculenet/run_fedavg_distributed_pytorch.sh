@@ -30,6 +30,7 @@ MPI_HOST_FILE=${19}
 PROCESS_NUM=`expr $WORKER_NUM + 1`
 if [ ! -n "$MPI_HOST_FILE" ]; then
   PI_HOST_FILE = 'mpi_host_file'
+fi
 echo 'using MPI_HOST_FILE :' + $MPI_HOST_FILE
 echo 'processor number :' + $PROCESS_NUM
 echo 'Start to run mpi'
