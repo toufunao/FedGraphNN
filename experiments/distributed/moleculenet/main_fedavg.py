@@ -100,7 +100,6 @@ def load_data(args, dataset_name):
     else:
         args.metric = "roc-auc"
 
-    logging.info(" args checking ****** ", args)
     (
         train_data_num,
         val_data_num,
@@ -195,13 +194,11 @@ def init_training_device(process_ID, fl_worker_num, gpu_num_per_machine):
         gpu_index = client_index % gpu_num_per_machine
         process_gpu_dict[client_index] = gpu_index
 
-    logging.info(process_gpu_dict)
     device = torch.device(
         "cuda:" + str(process_gpu_dict[process_ID - 1])
         if torch.cuda.is_available()
         else "cpu"
     )
-    logging.info(device)
     return device
 
 
@@ -240,7 +237,6 @@ if __name__ == "__main__":
         format="%(asctime)s.%(msecs)03d - {%(module)s.py (%(lineno)d)} - %(funcName)s(): %(message)s",
         datefmt="%Y-%m-%d,%H:%M:%S",
     )
-    logging.info(args)
 
     hostname = socket.gethostname()
     logging.info(
@@ -285,7 +281,6 @@ if __name__ == "__main__":
     )
 
     # load data
-    logging.info("检视参数", args)
     dataset, feat_dim, num_cats = load_data(args, args.dataset)
     [
         train_data_num,
