@@ -21,12 +21,10 @@ class SageMoleculeNetTrainer(ModelTrainer):
         return self.model.cpu().state_dict()
 
     def set_model_params(self, model_parameters):
-        logging.info("set_model_params")
         self.model.load_state_dict(model_parameters)
 
     def train(self, train_data, device, args):
         model = self.model
-        logging.info("train on device : ",device)
         model.to(device)
         model.train()
 
