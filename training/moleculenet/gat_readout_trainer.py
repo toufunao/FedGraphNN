@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 import torch
-import wandb
+# import wandb
 from sklearn.metrics import roc_auc_score, precision_recall_curve, auc
 
 from FedML.fedml_core.trainer.model_trainer import ModelTrainer
@@ -154,10 +154,10 @@ class GatMoleculeNetTrainer(ModelTrainer):
             model_list.append(model)
             score_list.append(score)
             logging.info("Client {}, Test ROC-AUC score = {}".format(client_idx, score))
-            wandb.log({"Client {} Test/ROC-AUC".format(client_idx): score})
+            # wandb.log({"Client {} Test/ROC-AUC".format(client_idx): score})
         avg_score = np.mean(np.array(score_list))
         logging.info("Test ROC-AUC Score = {}".format(avg_score))
-        wandb.log({"Test/ROC-AUC": avg_score})
+        # wandb.log({"Test/ROC-AUC": avg_score})
         return True
 
     def _compare_models(self, model_1, model_2):

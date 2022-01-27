@@ -26,7 +26,7 @@ def add_args(parser):
         "--dataset", type=str, default="bbbp", help="Dataset used for training"
     )
 
-    parser.add_argument("--data_dir", type=str, default="data/moleculenet", help="Data directory")
+    parser.add_argument("--data_dir", type=str, default="~/GNN/FedGraphNN/data/moleculenet", help="Data directory")
 
     parser.add_argument(
         "--normalize_features",
@@ -57,13 +57,13 @@ def add_args(parser):
     )
 
     parser.add_argument(
-        "--hidden_size", type=int, default=32, help="Size of GNN hidden layer"
+        "--hidden_size", type=int, default=64, help="Size of GNN hidden layer"
     )
 
     parser.add_argument(
         "--node_embedding_dim",
         type=int,
-        default=32,
+        default=64,
         help="Dimensionality of the vector space the atoms will be embedded in",
     )
 
